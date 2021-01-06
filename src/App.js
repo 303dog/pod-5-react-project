@@ -3,8 +3,11 @@ import "./App.css";
 function App() {
     return (
         <div className="App">
-            <h1>This is the header I want</h1>
-            <h3>This is my subheading</h3>
+            <ul>
+                <li>Red</li>
+                <li>Blue</li>
+                <li>Green</li>
+            </ul>
         </div>
     );
 }
