@@ -1,13 +1,9 @@
 import "./App.css";
-
+import DogContainer from "./containers/DogContainer";
 function App() {
     return (
         <div className="App">
-            <ul>
-                <li>Red</li>
-                <li>Blue</li>
-                <li>Green</li>
-            </ul>
+            <DogContainer />
         </div>
     );
 }
