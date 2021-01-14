@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import Select from "../components/Select";
+import ImageMed from "../components/ImageMed";
+import { store } from "../store";
+import { Link } from "react-router-dom";
 class DogContainer extends Component {
     state = {
         breeds: [],
+        imageUrls: [],
         currentSelection: null,
     };
 
@@ -16,8 +20,33 @@ class DogContainer extends Component {
     }
 
     breedSelect = (event) => {
-        this.setState({
-            currentSelection: event.target.value,
+        const currentSelection = event.target.value;
+        fetch(`https://dog.ceo/api/breed/${currentSelection}/images`)
+            .then((res) => res.json())
+            .then(({ message }) => {
+                const imageUrls = message.slice(0, 10);
+                this.setState({
+                    imageUrls,
+                    currentSelection,
+                });
+            });
+    };
+
+    addToFavorites = (url) => {
+        store.favorites.push(url);
+        console.log(store.favorites);
+    };
+
+    renderImages = () => {
+        return this.state.imageUrls.map((url, index) => {
+            return (
+                <div key={index}>
+                    <ImageMed url={url} altText={this.state.currentSelection} />
+                    <button onClick={() => this.addToFavorites(url)}>
+                        Favorite
+                    </button>
+                </div>
+            );
         });
     };
 
@@ -37,7 +66,9 @@ class DogContainer extends Component {
                     options={this.state.breeds}
                     handleOnChange={this.breedSelect}
                 />
+                <Link to={"/favorites"}>Favorites</Link>
                 {this.renderSelectionText()}
+                {this.state.imageUrls.length > 0 && this.renderImages()}
             </>
         );
     }
